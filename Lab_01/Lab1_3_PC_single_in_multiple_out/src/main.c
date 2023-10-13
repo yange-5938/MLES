@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include "simple_neural_networks.h"
 
-#define SAD   0.0		// TODO: Find appropriate sad value
+#define SAD   2.0		// TODO: Find appropriate sad value
 
 #define TEMPERATURE_PREDICTION_IDX  0
 #define HUMIDITY_PREDICTION_IDX 	1
