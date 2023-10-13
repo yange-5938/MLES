@@ -35,7 +35,6 @@ void elementwise_multiple( double input_scalar, double *weight_vector, double *o
 	
 }
 
-
 void single_input_multiple_output_nn(double input_scalar, double *weight_vector, double *output_vector, double VECTOR_LEN){
   elementwise_multiple(input_scalar, weight_vector,output_vector,VECTOR_LEN);
 }
@@ -44,6 +43,13 @@ void single_input_multiple_output_nn(double input_scalar, double *weight_vector,
 void matrix_vector_multiplication(double * input_vector, uint32_t INPUT_LEN, double * output_vector,
 		uint32_t OUTPUT_LEN, double weights_matrix[OUTPUT_LEN][INPUT_LEN]) {
 	// TODO: Use two for loops to calculate output vector based on the input vector and weights matrix
+
+	for (int i = 0; i < OUTPUT_LEN; i++){
+		for (int j = 0; j < OUTPUT_LEN; j++){
+			output_vector[i] += input_vector[j]*weights_matrix[i][j];
+		}
+	}
+
 }
 
 
