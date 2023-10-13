@@ -20,7 +20,7 @@ double weight  = 0.5;
 double input = 0.5;
 double expected_value  = 0.8;
 // TODO: Try to find best step_amount value that minimizes number of epochs when training error decreases to zero.
-double learning_rate = 0.001;
+double learning_rate = 0.003;
 uint32_t epochs = 1500;
 
 int main(void) {
