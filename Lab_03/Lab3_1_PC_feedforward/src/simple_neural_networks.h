@@ -21,7 +21,7 @@ void vector_relu(double * input_vector, double * output_vector, uint32_t LEN);
 void vector_sigmoid(double * input_vector, double * output_vector, uint32_t LEN);
 double sigmoid(double x);
 double compute_cost(uint32_t m, double yhat[m][1], double y[m][1]);
-void normalize_data_2d(uint32_t ROW, uint32_t COL, double input_matrix[ROW][COL], double output_matrix[ROW][COL]);
+uint8_t normalize_data_2d(uint32_t ROW, uint32_t COL, double input_matrix[ROW][COL], double output_matrix[ROW][COL]);
 void matrix_print(uint32_t ROW, uint32_t COL, double A[ROW][COL]);
 
 

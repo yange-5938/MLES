@@ -21,6 +21,8 @@
 #define NUM_OF_HID1_NODES	3	// Hidden layer
 #define NUM_OF_OUT_NODES	1	// Output classes
 
+#define DATA_LENGTH 		2
+
 double learning_rate=0.01;
 
 /*Input layer to hidden layer*/
@@ -48,12 +50,14 @@ double train_x[1][NUM_OF_FEATURES];
 double train_y[1][NUM_OF_OUT_NODES] = {{1}};  	// The expected (training) y values
 
 
-int main(void) {
-	double raw_x[1][NUM_OF_FEATURES] = {{23.0, 40.0, 100.0}};	// temp, hum, air_q input values
 
-	normalize_data_2d(1, NUM_OF_FEATURES, raw_x, train_x);
+
+int main(void) {
+	double raw_x[DATA_LENGTH][NUM_OF_FEATURES] = {{23.0, 40.0, 100.0}, {20.0, 35.0, 190.0}};	// temp, hum, air_q input values
+
+	normalize_data_2d(DATA_LENGTH, NUM_OF_FEATURES, raw_x, train_x);
 	printf("train_x \n");
-	matrix_print(1, NUM_OF_FEATURES, train_x);
+	matrix_print(DATA_LENGTH, NUM_OF_FEATURES, train_x);
 
 	// Lab 3.1
 	linear_forward_nn(*train_x, NUM_OF_FEATURES, z1[0], NUM_OF_HID1_NODES, w1, b1);
@@ -62,6 +66,10 @@ int main(void) {
 	printf("Output vector (z1): %f\n", z1[0][2]);
 
 	vector_relu(z1[0],a1[0],NUM_OF_HID1_NODES);
+
+	// printf("Output vector (a1): %f\n", a1[0][0]);
+	// printf("Output vector (a1): %f\n", a1[0][1]);
+	// printf("Output vector (a1): %f\n", a1[0][2]);
 
 	linear_forward_nn(a1[0], NUM_OF_HID1_NODES, z2[0], NUM_OF_OUT_NODES, w2, b2);
 	printf("Output vector (z2): %f\n", z2[0][0]);
