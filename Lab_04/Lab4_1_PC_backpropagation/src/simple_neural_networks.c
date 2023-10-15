@@ -6,17 +6,13 @@
 
 double single_in_single_out_nn(double  input, double weight) {
 	// TODO: Return the result of multiplication of input and its weight.
-   	return input* weight;
+   	return 0;
 }
 
 
 double weighted_sum(double * input, double * weight, uint32_t INPUT_LEN) {
 	double output = 0;
 	// TODO: Use for loop to multiply all inputs with their weights
-	for( int i = 0; i<INPUT_LEN;i++ ){
-		output += input[i] * weight[i]; 
-	}
-
  return output;
 }
 
@@ -24,16 +20,12 @@ double weighted_sum(double * input, double * weight, uint32_t INPUT_LEN) {
 double multiple_inputs_single_output_nn(double * input, double *weight, uint32_t INPUT_LEN) {
 	double predicted_value = 0;
 	// TODO: Use weighted_sum function to calculate the output
-	predicted_value = weighted_sum(input,weight,INPUT_LEN);
-	
 	return predicted_value;
 }
 
 
 void elementwise_multiple( double input_scalar, double *weight_vector, double *output_vector, double VECTOR_LEN) {
 	// TODO: Use for loop to calculate output_vector
-
-	
 }
 
 
@@ -150,27 +142,31 @@ double compute_cost(uint32_t m, double yhat[m][1], double y[m][1]) {
 }
 
 
-void normalize_data_2d(uint32_t ROW, uint32_t COL, double input_matrix[ROW][COL], double output_matrix[ROW][COL]){
-	for(uint32_t j =0;j<COL;j++) {
-		double max =  -99999999;
-		double min =  99999999;
+uint8_t normalize_data_2d(uint32_t ROW, uint32_t COL, double input_matrix[ROW][COL], double output_matrix[ROW][COL]){
+	if (ROW <= 1) {
+		printf("ERROR: At least 2 examples are required. Current dataset length is %d\n", ROW);
+		return 1;
+	} else {
+		for(uint32_t j =0;j<COL;j++) {
+			double max = -9999999;
+			double min = 9999999;
 
-		for(uint32_t i =0;i<ROW;i++){
-		  for(int j =0;j<COL;j++){
-			if(input_matrix[i][j] > max)
-				max = input_matrix[i][j];
+			// Find MIN and MAX values in given array
+			for(int i =0;i<ROW;i++){
+			  if(input_matrix[i][j] > max)
+				  max = input_matrix[i][j];
 
-			if (input_matrix[i][j] < min)
-				min = input_matrix[i][j];
-		  }
-		}
+			  if (input_matrix[i][j] < min)
+				  min = input_matrix[i][j];
+			}
 
-		for(uint32_t i =0;i<ROW;i++){
-			for(int j=0;j<COL;j++){
-				output_matrix[i][j] =  (input_matrix[i][j] - min)/(max-min);
+			// Normalization
+			for(int i=0;i<ROW;i++){
+				output_matrix[i][j] = (float)((input_matrix[i][j] - min)/(max-min));
 			}
 		}
 	}
+	return 0;
 }
 
 
@@ -302,5 +298,3 @@ void matrix_transpose(uint32_t ROW, uint32_t COL, double A[ROW][COL], double A_T
 		}
 	}
 }
-
-
