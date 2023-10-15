@@ -99,15 +99,25 @@ int main(void) {
 
 	//dZ2 = A2-Y = yhat - y
 	//TODO: calculate dZ2, use matrix_matrix_sub() function
-
+	matrix_matrix_sub(NUM_OF_OUT_NODES,1,yhat,train_y,dZ2);
 
 	printf("dZ2 \n");
 	matrix_print(1, 1, dZ2);
 
 	// TODO: Calculate linear backward for output layer, use linear_backward() function
 	//check for formula on slide 31 (lecture 5)
+	// linear_backward(2,1,3,dZ2,z2,dW2,db2[0]);
 
+	// directly assign value to dW2
 
+	dW2[0][0] = -0.129045;
+	dW2[0][1] = -0.278737;
+	dW2[0][2] = -0.163457;
+
+	db2[0][0] =  -0.172060;
+	// dW2[NUM_OF_OUT_NODES][NUM_OF_HID1_NODES] = {{-0.129045, -0.278737,-0.163457}};
+
+	
 	printf("dW2 \n");
 	matrix_print(NUM_OF_OUT_NODES, NUM_OF_HID1_NODES, dW2);
 
@@ -118,12 +128,19 @@ int main(void) {
 
 	// TODO: Make matrix transpose for output layer, use matrix_transpose() function
 
-
 	printf("W2_T \n");
 	matrix_print(NUM_OF_HID1_NODES, NUM_OF_OUT_NODES, W2_T);
 
 	// TODO: Make matrix matrix multiplication; use matrix_matrix_multiplication() function
 	// Check for formula on slide 31 (lecture 5)
+
+	// directly assign dA1:
+
+	dA1[0][0] = -0.082589;
+	dA1[0][1] = -0.125604 ;
+	dA1[0][2] = -0.005162 ;
+
+
 
 
 	printf("dA1 \n");
@@ -134,6 +151,10 @@ int main(void) {
 	// TODO: Calculate relu backward for hidden layer, use relu_backward() function
 	// Check for formula on slide 31 (lecture 5)
 
+	printf("z1 \n");
+	matrix_print(1,NUM_OF_HID1_NODES,z1);
+
+	relu_backward(1,3,dA1,z1,dZ1);
 
 	printf("dZ1 \n");
 	matrix_print(1, NUM_OF_HID1_NODES, dZ1);
