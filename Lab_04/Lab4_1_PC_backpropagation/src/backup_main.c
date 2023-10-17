@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include "simple_neural_networks.h"
 
-
 // Size of the layers
 #define NUM_OF_FEATURES   	3  	// input values
 #define NUM_OF_HID1_NODES	3
@@ -107,15 +106,19 @@ int main(void) {
 
 	// TODO: Calculate linear backward for output layer, use linear_backward() function
 	//check for formula on slide 31 (lecture 5)
-	// linear_backward(2,1,3,dZ2,z2,dW2,db2[0]);
 
-	// directly assign value to dW2
 
-	dW2[0][0] = -0.129045;
-	dW2[0][1] = -0.278737;
-	dW2[0][2] = -0.163457;
+	linear_backward(NUM_OF_OUT_NODES,NUM_OF_HID1_NODES,1,dZ2,a1,dW2,db2[0]);
 
-	db2[0][0] =  -0.172060;
+	// // directly assign value to dW2
+
+	// dW2[0][0] = -0.129045;
+	// dW2[0][1] = -0.278737;
+	// dW2[0][2] = -0.163457;
+
+	// db2[0][0] =  -0.172060;
+
+
 	// dW2[NUM_OF_OUT_NODES][NUM_OF_HID1_NODES] = {{-0.129045, -0.278737,-0.163457}};
 
 	
@@ -128,6 +131,9 @@ int main(void) {
 	double W2_T[NUM_OF_HID1_NODES][NUM_OF_OUT_NODES] = {{0},{0},{0}};
 
 	// TODO: Make matrix transpose for output layer, use matrix_transpose() function
+	matrix_transpose(NUM_OF_OUT_NODES,NUM_OF_HID1_NODES, w2,W2_T);
+
+
 
 	printf("W2_T \n");
 	matrix_print(NUM_OF_HID1_NODES, NUM_OF_OUT_NODES, W2_T);
@@ -135,13 +141,12 @@ int main(void) {
 	// TODO: Make matrix matrix multiplication; use matrix_matrix_multiplication() function
 	// Check for formula on slide 31 (lecture 5)
 
-	// directly assign dA1:
+	matrix_matrix_multiplication(NUM_OF_HID1_NODES,NUM_OF_OUT_NODES,1,W2_T,dZ2,dA1);
 
-	dA1[0][0] = -0.082589;
-	dA1[0][1] = -0.125604 ;
-	dA1[0][2] = -0.005162 ;
-
-
+	// // directly assign dA1:
+	// dA1[0][0] = -0.082589;
+	// dA1[0][1] = -0.125604 ;
+	// dA1[0][2] = -0.005162 ;
 
 
 	printf("dA1 \n");
@@ -151,24 +156,29 @@ int main(void) {
 
 	// TODO: Calculate relu backward for hidden layer, use relu_backward() function
 	// Check for formula on slide 31 (lecture 5)
-
-	printf("z1 \n");
-	matrix_print(1,NUM_OF_HID1_NODES,z1);
-
-	relu_backward(1,3,dA1,z1,dZ1);
+	relu_backward(1,NUM_OF_HID1_NODES,dA1,z1,dZ1);
 
 	printf("dZ1 \n");
 	matrix_print(1, NUM_OF_HID1_NODES, dZ1);
 
 	// TODO: Calculate linear backward for hidden layer, use linear_backward() function
 	// Check for formula on slide 31 (lecture 5)
-
+	
+	
+	linear_backward(NUM_OF_HID1_NODES,NUM_OF_FEATURES,1,dZ1,raw_x,dW1,db1[0]);
 
 	/*UPDATE PARAMETERS*/
 
+	printf("before updated dW1 \n");
+	matrix_print(NUM_OF_FEATURES,NUM_OF_HID1_NODES, dW1);
+	
+	printf("before updated W1 \n");
+	matrix_print(NUM_OF_FEATURES, NUM_OF_HID1_NODES, w1);
+
+
 	// W1 = W1 - learning_rate * dW1
 	// TODO: update weights for W1, use weights_update() function
-
+	weights_update(NUM_OF_FEATURES,NUM_OF_HID1_NODES,learning_rate,dW1,w1);
 
 	printf("updated W1  \n");
 	matrix_print( NUM_OF_HID1_NODES, NUM_OF_FEATURES, w1);
@@ -176,20 +186,35 @@ int main(void) {
 	// b1 = b1 - learning_rate * db1
 	// TODO: update bias for b1, use weights_update() function
 
+	// printf("before updated b1 \n");
+	// matrix_print(1, NUM_OF_HID1_NODES, b1);
+
+	// printf("before updated db1 \n");
+	// matrix_print(1, NUM_OF_HID1_NODES, db1);
+
+	weights_update(1,NUM_OF_HID1_NODES,learning_rate,db1,b1);
 
 	printf("updated b1  \n");
 	matrix_print(NUM_OF_HID1_NODES, 1, b1);
 
+	
+	// print w2
+	printf("before updated w2  \n");
+	matrix_print( NUM_OF_OUT_NODES, NUM_OF_HID1_NODES, w2);
+	
 	// W2 = W2 - learning_rate * dW2
 	// TODO: update weights for W2, use weights_update() function
+	weights_update(1,NUM_OF_HID1_NODES, learning_rate,dW2,w2);
 
 
+	
 	printf("updated W2  \n");
 	matrix_print( NUM_OF_OUT_NODES, NUM_OF_HID1_NODES, w2);
 
 
 	// b2 = b2 - learning_rate * db2
 	// TODO: update bias for b2, use weights_update() function
+	weights_update(1,1,learning_rate,db2,b2);
 
 
 	printf("updated b2  \n");
