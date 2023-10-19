@@ -242,10 +242,6 @@ void weightsB_zero_initialization(double * weightsB, uint32_t LEN){
 void relu_backward(uint32_t m, uint32_t LAYER_LEN, double dA[m][LAYER_LEN], double Z[m][LAYER_LEN], double dZ[m][LAYER_LEN]) {
 	//TODO: implement derivative of relu function  You can can choose either to calculate for all example at the same time
 	//or make iteratively. Check formula for derivative lecture 5 on slide 24
-
-	// dA value is given, Z is also given.
-	// we want to form the dZ:
-
 	for(int j =0; j < m;j++){
 		for( int i = 0; i < LAYER_LEN; i ++){
 			if (Z[j][i] <0){
@@ -264,11 +260,28 @@ void linear_backward(uint32_t LAYER_LEN, uint32_t PREV_LAYER_LEN, uint32_t m, do
 	// TODO: implement linear backward. You can can choose either to calculate for all example at the same time (dw= 1/m *A_prev[T]*dZ;)
 	//or make iteratively  (dw_iter= A_prev[T]*dZ;)
 
-	// dZ must be given, A_prev must be given too.
+
+	// void matrix_matrix_multiplication(uint32_t MATRIX1_ROW, uint32_t MATRIX1_COL, uint32_t MATRIX2_COL,
+	// 								double input_matrix1[MATRIX1_ROW][MATRIX1_COL],
+	// 								double input_matrix2[MATRIX1_COL][MATRIX2_COL],
+	// 								double output_matrix[MATRIX1_ROW][MATRIX2_COL])
+	
+	// matrix_matrix_multiplication(LAYER_LEN,m,)
+
+	// void matrix_transpose(uint32_t ROW, uint32_t COL, double A[ROW][COL], double A_T[COL][ROW]) {
+	double A_prev_tran[PREV_LAYER_LEN][m];	
+	matrix_transpose(LAYER_LEN,m,A_prev,A_prev_tran);
+	matrix_matrix_multiplication(LAYER_LEN,m,PREV_LAYER_LEN,dZ,A_prev,dW);
+
+	for (uint32_t i = 0; i < LAYER_LEN; i++){
+		db[i] = dZ[m-1][i];
+	}
 
 
 
+	
 }
+
 
 
 void matrix_matrix_sum(uint32_t MATRIX_ROW, uint32_t MATRIX_COL,
@@ -331,6 +344,12 @@ void weights_update(uint32_t MATRIX_ROW, uint32_t MATRIX_COL, double learning_ra
 									double dW[MATRIX_ROW][MATRIX_COL],
 									double W[MATRIX_ROW][MATRIX_COL]) {
 	//TODO: implement weights_update function
+
+	for(int i = 0; i < MATRIX_ROW; i++){
+		for (int j =0; j < MATRIX_COL; j++){
+			W[i][j] -= learning_rate*dW[i][j];
+		}
+	}
 }
 
 
