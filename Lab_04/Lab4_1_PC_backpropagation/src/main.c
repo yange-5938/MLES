@@ -182,10 +182,12 @@ int main(void) {
 
 	/*PREDICT*/
 	printf("-------- PREDICT --------\n");
-	double input_x_eg[1][NUM_OF_FEATURES] = {{20, 40, 110}};
+
+	#define BatchSize   	3  	// input values
+	double input_x_eg[BatchSize][NUM_OF_FEATURES] = {{20, 40, 110},{20.0, 35.0, 190.0}};
 	double input_x[1][NUM_OF_FEATURES] = {{0, 0, 0}};
 
-	normalize_data_2d(1,1, input_x_eg, input_x);
+	normalize_data_2d(BatchSize,NUM_OF_FEATURES, input_x_eg, input_x);
 
 	/*compute z1*/
 	linear_forward_nn(*input_x, NUM_OF_FEATURES, z1[0], NUM_OF_HID1_NODES, w1, *b1);
